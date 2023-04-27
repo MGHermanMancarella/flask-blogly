@@ -24,7 +24,8 @@ def homepage():
 def get_users():
     '''Populates user page with users in database'''
 
-    users = User.query.all()
+    # TODO:orderby...something
+    users = User.query.order_by(User.first_name).all()
 
     return render_template('users.html', users=users)
 
@@ -40,14 +41,9 @@ def new_user():
 def create_user():
     '''Adds new user to database & redirects to users page'''
 
-    first_name = request.form.get('first')
-    last_name = request.form.get('last')
-    img_url = request.form.get('imgURL')
-
-    if img_url == '':
-        img_url = None
-    else:
-        img_url = request.form.get('imgURL')
+    first_name = request.form['first']
+    last_name = request.form['last']
+    img_url = request.form['imgURL'] or None
 
     new_user = User(first_name=first_name,
                     last_name=last_name, image_url=img_url)
@@ -83,11 +79,7 @@ def get_edit_page(user_id):
     '''renders page to edit user data'''
 
     user = User.query.get(user_id)
-
-    if user.image_url == None:
-        user_img = ''
-    else:
-        user_img = user.image_url
+    user_img = user.image_url or ''
 
     return render_template('edit.html', user=user, user_img=user_img)
 
@@ -98,18 +90,9 @@ def edit_user(user_id):
 
     user = User.query.get(user_id)
 
-    first_name = request.form.get('first')
-    last_name = request.form.get('last')
-    img_url = request.form.get('imgURL')
-
-    if img_url == '':
-        img_url = None
-    else:
-        img_url = request.form.get('imgURL')
-
-    user.first_name = first_name
-    user.last_name = last_name
-    user.image_url = img_url
+    user.first_name = request.form.get('first')
+    user.last_name = request.form.get('last')
+    user.image_url = request.form.get('imgURL') or None
 
     db.session.commit()
 

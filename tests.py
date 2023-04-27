@@ -53,6 +53,8 @@ class UserViewTestCase(TestCase):
         db.session.rollback()
 
     def test_list_users(self):
+        """Tests for test_user on user page."""
+
         with self.client as c:
             resp = c.get("/users")
             self.assertEqual(resp.status_code, 200)
@@ -61,6 +63,8 @@ class UserViewTestCase(TestCase):
             self.assertIn("test1_last", html)
 
     def test_new_user(self):
+        """Test for new user page"""
+
         with self.client as c:
             resp = c.get("/users/new")
             self.assertEqual(resp.status_code, 200)
@@ -68,6 +72,8 @@ class UserViewTestCase(TestCase):
             self.assertIn("new user test", html)
 
     def test_add_new_user(self):
+        """Redirection test for new user post"""
+
         with self.client as c:
             resp = c.post("/users/new", data={
                 "first": "bob",
@@ -75,5 +81,41 @@ class UserViewTestCase(TestCase):
                 "imgURL": "",
             })
             self.assertEqual(resp.status_code, 302)
+            self.assertEqual(resp.location, "/users")
+
+    def test_redirection_followed(self):
+        """Adding new user to DB and redirect to users"""
+
+        with self.client as c:
+            resp = c.post("/users/new", follow_redirects=True, data={
+                "first": "bob",
+                "last": "banana",
+                "imgURL": "",
+            })
             html = resp.get_data(as_text=True)
-            print(html)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('banana', html)
+            self.assertIn('<!-- TESTSTRING_USERS -->', html)
+
+    def test_user_details_route(self):
+        """Accessing user details page via URL user_id"""
+
+        with self.client as c:
+            resp = c.get(f"/users/{self.user_id}")
+            html = resp.get_data(as_text=True)
+
+            self.assertIn("test1_first", html)
+            self.assertIn("test1_last", html)
+            self.assertIn(DEFAULT_IMAGE_URL, html)
+
+    def test_delete(self):
+        with self.client as c:
+            resp = c.post(f"/users/{self.user_id}/delete",
+                          follow_redirects=True)
+
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn('test1_first', html)
+            self.assertNotIn('test1_last', html)
