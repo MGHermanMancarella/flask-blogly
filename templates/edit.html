@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Create a User</h1>
+<h1>Edit User</h1>
 
 <div>
 	<form method="POST">
@@ -27,7 +27,7 @@
 				type="text"
 				name="imgURL"
 				id="imgURL"
-				value="{{user.image_url}}"
+				value="{{user_img}}"
 			/>
 		</div>
 		<button>Save</button>

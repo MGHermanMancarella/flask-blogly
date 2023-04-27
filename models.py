@@ -39,6 +39,5 @@ class User(db.Model):
 
     image_url = db.Column(
         db.Text,
-        nullable=True,
         default=DEFAULT_IMAGE_URL,
         unique=False)

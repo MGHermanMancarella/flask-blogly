@@ -84,7 +84,12 @@ def get_edit_page(user_id):
 
     user = User.query.get(user_id)
 
-    return render_template('edit.html', user=user)
+    if user.image_url == None:
+        user_img = ''
+    else:
+        user_img = user.image_url
+
+    return render_template('edit.html', user=user, user_img=user_img)
 
 
 @app.post('/users/<int:user_id>/edit')
