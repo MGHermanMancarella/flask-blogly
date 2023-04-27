@@ -8,7 +8,7 @@ from models import connect_db, db, User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    "DATABASE_URL", 'postgresql:///blogly')  # TODO: change db url
+    "DATABASE_URL", 'postgresql:///blogly') 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -22,7 +22,7 @@ def homepage():
 @app.get('/users')
 def get_users():
 
-    users = User.query.all()  # TODO: revisit if doesn't work
+    users = User.query.all() 
 
     return render_template('users.html', users=users)
 
@@ -36,9 +36,9 @@ def new_user():
 @app.post('/users/new')
 def create_user():
 
-    first_name = request.forms.get('first')
-    last_name = request.forms.get('last')
-    img_url = request.forms.get('imgURL')
+    first_name = request.form.get('first')
+    last_name = request.form.get('last')
+    img_url = request.form.get('imgURL')
 
     new_user = User(first_name=first_name,
                     last_name=last_name, image_url=img_url)
@@ -60,9 +60,11 @@ def user_details(user_id):
 @app.post('/users/<int:user_id>/delete')
 def delete_user(user_id):
 
-    User.query.get(user_id).delete()
+    user = User.query.get(user_id) #TODO: fix this delete function
+    db.session.delete(user)
+    db.session.commit()
 
-    redirect('/users')
+    return redirect('/users')
 
 
 @app.get('/users/<int:user_id>/edit')
