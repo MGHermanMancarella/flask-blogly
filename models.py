@@ -41,3 +41,27 @@ class User(db.Model):
         db.Text,
         default=DEFAULT_IMAGE_URL,
         unique=False)
+
+class Post(db.Model):
+    """Post."""
+
+    __tablename__= "posts"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True)
+
+    title = db.Column(
+        db.String(30),
+        nullable=False)
+    
+    content = db.Column(
+        db.text,
+        nullable=False)
+
+    created_At = db.Column(
+        db.DateTime,
+        nullable=False)
+    
+    
