@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Add Post for {{user.first_name}} {{user.last_name}}</h1>
+
+<div>
+	<form method="POST">
+		<div>
+			<label for="first">Title</label>
+			<input
+				type="text"
+				name="title"
+				id="first"
+			/>
+		</div>
+		<div>
+			<label for="last">Content</label>
+			<input
+				type="text"
+				name="content"
+				id="last"
+			/>
+			<br />
+		</div>
+
+		<button>Save</button>
+	</form>
+</div>
+<form action="/">
+	<button>Cancel</button>
+</form>
+
+{% endblock %}

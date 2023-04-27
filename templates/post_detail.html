@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+<h1>{{post.title}}</h1>
+<!-- NOTE: ^^ arbitrary, rename OK -->
+
+<form action="/users/{{user.id}}/edit">
+	<button>edit</button>
+</form>
+
+<form>
+	<button>DELETE</button>
+</form>
+
+<form action="/new_post">Add Post</form>
+{% endblock %}
