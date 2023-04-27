@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, request, redirect, render_template
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User
+from models import connect_db, db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -98,5 +98,23 @@ def edit_user(user_id):
 
     return redirect('/users')
 
+@app.get('/users/<int:user_id>/posts/new')
+def add_new_post(user_id):
+    """Render new post form"""
+
+    return render_template("new_post.html")
+
+@app.post('/users/<int:user_id>/posts/new')
+def add_new_post(user_id):
+    """Render new post form"""
+
+    title = request.form['title']
+    content = request.form['Post Content']
+
+    post = Post(title=title, content=content)
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f"/users/f{user_id}>")
 
 connect_db(app)
