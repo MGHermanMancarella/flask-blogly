@@ -42,10 +42,11 @@ class User(db.Model):
         default=DEFAULT_IMAGE_URL,
         unique=False)
 
+
 class Post(db.Model):
     """Post."""
 
-    __tablename__= "posts"
+    __tablename__ = "posts"
 
     id = db.Column(
         db.Integer,
@@ -55,7 +56,7 @@ class Post(db.Model):
     title = db.Column(
         db.String(30),
         nullable=False)
-    
+
     content = db.Column(
         db.text,
         nullable=False)
@@ -63,5 +64,9 @@ class Post(db.Model):
     created_At = db.Column(
         db.DateTime,
         nullable=False)
-    
-    
+
+    owner_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=False,
+    )

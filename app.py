@@ -59,8 +59,9 @@ def user_details(user_id):
     '''Renders user detail page'''
 
     user = User.query.get(user_id)
+    posts = Post.query.filter(Post.owner_id == user_id)
 
-    return render_template('details.html', user=user)
+    return render_template('details.html', user=user, posts=posts)
 
 
 @app.post('/users/<int:user_id>/delete')
@@ -98,11 +99,13 @@ def edit_user(user_id):
 
     return redirect('/users')
 
+
 @app.get('/users/<int:user_id>/posts/new')
-def add_new_post(user_id):
+def add_new_post():
     """Render new post form"""
 
     return render_template("new_post.html")
+
 
 @app.post('/users/<int:user_id>/posts/new')
 def add_new_post(user_id):
@@ -116,5 +119,6 @@ def add_new_post(user_id):
     db.session.commit()
 
     return redirect(f"/users/f{user_id}>")
+
 
 connect_db(app)
