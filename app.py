@@ -60,7 +60,7 @@ def user_details(user_id):
 
     user = User.query.get(user_id)
     posts = Post.query.filter(Post.owner_id == user_id)
-    
+
     return render_template('details.html', user=user, posts=posts)
 
 
@@ -114,13 +114,13 @@ def add_new_post(user_id):
     """Render new post form"""
 
     title = request.form['title']
-    content = request.form['Post Content']
+    content = request.form['content']
 
-    post = Post(title=title, content=content)
+    post = Post(title=title, content=content, owner_id=user_id)
     db.session.add(post)
     db.session.commit()
 
-    return redirect(f"/users/f{user_id}>")
+    return redirect(f"/users/{user_id}")
 
 
 connect_db(app)

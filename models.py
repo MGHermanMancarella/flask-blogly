@@ -63,6 +63,7 @@ class Post(db.Model):
 
     created_At = db.Column(
         db.DateTime,
+        default=db.func.now(),
         nullable=False)
 
     owner_id = db.Column(
