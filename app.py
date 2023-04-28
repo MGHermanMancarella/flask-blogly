@@ -60,7 +60,7 @@ def user_details(user_id):
 
     user = User.query.get(user_id)
     posts = Post.query.filter(Post.owner_id == user_id)
-
+    
     return render_template('details.html', user=user, posts=posts)
 
 
@@ -101,10 +101,12 @@ def edit_user(user_id):
 
 
 @app.get('/users/<int:user_id>/posts/new')
-def add_new_post():
+def get_new_post(user_id):
     """Render new post form"""
 
-    return render_template("new_post.html")
+    user = User.query.get(user_id)
+
+    return render_template("new_post.html", user=user)
 
 
 @app.post('/users/<int:user_id>/posts/new')

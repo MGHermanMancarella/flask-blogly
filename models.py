@@ -58,7 +58,7 @@ class Post(db.Model):
         nullable=False)
 
     content = db.Column(
-        db.text,
+        db.Text,
         nullable=False)
 
     created_At = db.Column(
